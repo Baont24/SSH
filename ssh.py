@@ -2,8 +2,9 @@ from tracemalloc import start
 import paramiko
 import json
 
-SeverTest = "172.25.3.123"
+path_w = '/myfile.txt'
 
+SeverTest = "172.25.3.123"
 
 SeverTechX_32 = "172.20.1.32"
 SeverTechX_33 = "172.20.1.33"
@@ -23,6 +24,7 @@ ssh.load_system_host_keys()
 
 ssh.connect(SeverTechX_33, port = 22, username = UserTechX, password = PassTechX)
 
+accNumber = input("nhập số TK: ")
 
 def Check_transID(accNumber):
     
@@ -33,24 +35,25 @@ def Check_transID(accNumber):
         print(line.rstrip())
         print(len(line.rstrip()))
 
-    num_1 = line.find("transactionId") + 16
-    num_2 = line.find("uri") - 3
-    transactionID = line[num_1:num_2]
+        num_1 = line.find("transactionId") + 16
+        num_2 = line.find("uri") - 3
+        transactionID = line[num_1:num_2] 
     
     return transactionID
+
 
 def Check_Log(accNumber):
     Trans_ID = Check_transID(accNumber)
     print('Running Check Log')
     (ssh_stdin, ssh_stdout, ssh_stderr) = ssh.exec_command(log_tranID_OTP.format(Trans_ID), get_pty = True)
     for line in ssh_stdout.readlines():
-        print("data: {}".format(len(line.rstrip())))
-        print("text")
+        print(line.rstrip())
+        print("============================================================")
         
     # with open(output_file, "w+") as file:
     #     file.write(str(cmd_output))
 
-Check_Log("101325")
+Check_Log(accNumber)
 
     # cmd_output = ssh_stdout.read()
     # print('log printing: ', command, cmd_output)
