@@ -1,4 +1,4 @@
-from email import message
+
 import paramiko
 import pandas
 import datetime
@@ -13,13 +13,13 @@ UserName = "ubuntu"
 Password = "SCIS7dkKqUWSRwWs9uQi"
 
 Verify_OTP = "grep -i verifyAndSaveOtp.*{} containers/logs/rest-proxy-prod-3/application.log*"
+# Verify_OTP_sms = "grep {} containers/logs/notification-prod/application.log"
 
 accNumber = input("Nhập số TK: ")
 
 transactionID = ""
 
 def Check_TransID(accNumber):
-    
     
     ssh = paramiko.SSHClient()
 
@@ -42,14 +42,13 @@ def Check_TransID(accNumber):
             num_2 = line.find("uri") - 3
             transactionID = line[num_1:num_2]
             
-            print(transactionID)
-            
             num_time1 = transactionID.find("-")
             num_time2 = int(transactionID[0:num_time1])
         
             times = str(datetime.datetime.utcfromtimestamp(num_time2 / 1e3))
             
             print(times)
+            print(transactionID)
             
             f = open(path_w, "w")
             f.write(times)
@@ -70,15 +69,13 @@ def Check_TransID(accNumber):
             num_2 = line.find("uri") - 3
             
             transactionID = line[num_1:num_2]
-            
-            print(transactionID)
-            
+    
             num_time1 = transactionID.find("-")
-            num_time2 = transactionID[0:num_time1]
-            print(num_time2)
+            num_time2 = int(transactionID[0:num_time1])
+            times = str(datetime.datetime.utcfromtimestamp(num_time2 / 1e3))
             
-            f = open(path_w, "w")
-            f.write(transactionID)
+            print(num_time2)
+            print(transactionID)
             
             print("============== 32 Done ===================")
             

@@ -14,7 +14,9 @@ UserTechX = "ubuntu"
 PassTechX = "SCIS7dkKqUWSRwWs9uQi"
 
 Verify_OTP = "grep -i verifyAndSaveOtp.*{} containers/logs/rest-proxy-prod-3/application.log*"
-log_tranID_OTP = "grep {} containers/logs/mas-rest-bridge-prod/application.log* -A 10"
+eqt_dofundtransfer = "grep eqt/dofundtransfer.*C{} containers/logs/mas-rest-bridge-prod/application.log*"
+
+log_tranID_OTP = "grep {} containers/logs/mas-rest-bridge-prod/application.log* -A 20"
 
 ssh = paramiko.SSHClient()
 
@@ -22,9 +24,11 @@ ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 ssh.load_system_host_keys()
 
-ssh.connect(SeverTechX_33, port = 22, username = UserTechX, password = PassTechX)
+ssh.connect(SeverTechX_32, port = 22, username = UserTechX, password = PassTechX)
 
 accNumber = input("nhập số TK: ")
+
+transactionID = ""
 
 def Check_transID(accNumber):
     
@@ -33,12 +37,11 @@ def Check_transID(accNumber):
     (ssh_stdin, ssh_stdout, ssh_stderr) = ssh.exec_command(Verify_OTP.format(accNumber), get_pty = True)
     for line in ssh_stdout.readlines():
         print(line.rstrip())
-        print(len(line.rstrip()))
-
+   
         num_1 = line.find("transactionId") + 16
         num_2 = line.find("uri") - 3
         transactionID = line[num_1:num_2] 
-    
+        print(transactionID)
     return transactionID
 
 
@@ -47,6 +50,7 @@ def Check_Log(accNumber):
     print('Running Check Log')
     (ssh_stdin, ssh_stdout, ssh_stderr) = ssh.exec_command(log_tranID_OTP.format(Trans_ID), get_pty = True)
     for line in ssh_stdout.readlines():
+        # print("============================================================")
         print(line.rstrip())
         print("============================================================")
         
