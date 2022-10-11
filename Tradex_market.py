@@ -17,7 +17,7 @@ PassTechX = "SCIS7dkKqUWSRwWs9uQi"
 Verify_OTP = "grep -i verifyAndSaveOtp.*{} containers/logs/rest-proxy-prod-3/application.log*"
 eqt_dofundtransfer = "grep eqt/dofundtransfer.*C{} containers/logs/mas-rest-bridge-prod/application.log*"
 
-Tradex_market = "grep MONGO containers/share/app_env.sh"
+Tradex_market = "cat MONGO containers/share/app_env.sh"
 
 log_tranID_OTP = "grep {} containers/logs/mas-rest-bridge-prod/application.log* -A 20"
 
@@ -27,7 +27,7 @@ ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 ssh.load_system_host_keys()
 
-ssh.connect(SeverTechX_33, port = 22, username = UserTechX, password = PassTechX)
+ssh.connect(SeverTechX_32, port = 22, username = UserTechX, password = PassTechX)
 
 transactionID = ""
 
